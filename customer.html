@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoRewards – Customer Flow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header glass">
+    <div class="logo">🌱 EcoRewards</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Recycle</a>
+        <a href="#">Rewards</a>
+    </nav>
+    <div class="mini-profile">
+        Siddhi Kumari<br>
+        <span>Gold Member 🌟</span>
+    </div>
+</header>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- CUSTOMER PROFILE -->
+    <section class="box glass profile">
+        <h2>Customer Profile</h2>
+        <p><b>Name:</b> Siddhi Kumari</p>
+        <p><b>User ID:</b> ECO1023</p>
+        <p><b>City:</b> Bengaluru</p>
+    </section>
+
+    <!-- TOTAL EARNINGS -->
+    <section class="box glass earnings">
+        <h2>Total Earnings</h2>
+        <div class="amount">₹ <span id="money">120</span></div>
+        <p>Eco Points: <b><span id="points">60</span> 🪙</b></p>
+    </section>
+
+    <!-- SELECT BRAND & ITEMS -->
+    <section class="box glass product">
+        <h2>Recycle Your Packet</h2>
+        <select id="brand">
+            <option value="">Select Brand</option>
+            <option value="Nestle">Nestle</option>
+            <option value="Pepsi">Pepsi</option>
+            <option value="Unilever">Unilever</option>
+        </select>
+        <input type="number" id="items" placeholder="Number of packets">
+        <button onclick="findShops()">Find Nearby Shops</button>
+    </section>
+
+    <!-- LOCATION -->
+    <section class="box glass location hidden" id="locationBox">
+        <h2>Nearby Collection Shops</h2>
+        <p>📍 GreenMart – 0.4 km</p>
+        <p>📍 EcoStore – 1.1 km</p>
+    </section>
+
+    <!-- RETAILER DETAILS -->
+    <section class="box glass retailer hidden" id="retailerBox">
+        <h2>Retailer Details</h2>
+        <p><b>Shop Name:</b> GreenMart</p>
+        <p><b>Shop ID:</b> GM-221</p>
+        <p>Status: ✅ Verified</p>
+    </section>
+
+    <!-- RECYCLE PROCESS -->
+    <section class="box glass process hidden" id="processBox">
+        <h2>Recycle Our Packet</h2>
+        <ol>
+            <li>Give packet to shopkeeper</li>
+            <li>QR scanned & brand verified</li>
+            <li>Shopkeeper confirms quantity</li>
+        </ol>
+    </section>
+
+    <!-- SHOPKEEPER VERIFICATION -->
+    <section class="box glass verify hidden" id="verifyBox">
+        <h2>Shopkeeper Verification</h2>
+        <input type="text" id="shopId" placeholder="Enter Shopkeeper ID">
+        <button onclick="verifyShopkeeper()">Verify & Credit Points</button>
+    </section>
+
+    <!-- SUCCESS -->
+    <section class="box glass success hidden" id="successBox">
+        <h2>🎉 Points Credited</h2>
+        <p>+<span id="earnedPoints"></span> Eco Points</p>
+        <p>Discount Unlocked: <b><span id="discount"></span>%</b></p>
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer glass">
+    <div>
+        <h4>About</h4>
+        <p>Rewarding sustainable recycling.</p>
+    </div>
+    <div>
+        <h4>Support</h4>
+        <p>Help | Contact</p>
+    </div>
+    <div>
+        <h4>Legal</h4>
+        <p>Privacy | Terms</p>
+    </div>
+    <p class="copy">© 2026 EcoRewards</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
