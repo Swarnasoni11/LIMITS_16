@@ -2,76 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>EcoRewards – Customer Flow</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <title>EcoRewards | Select Role</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 350px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #10B981;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        button:hover {
+            background: #059669;
+        }
+    </style>
 </head>
 <body>
 
-<header class="header glass">
-    <div class="logo">🌱 EcoRewards</div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Recycle</a>
-        <a href="#">Rewards</a>
-    </nav>
-    <div class="mini-profile">
-        Siddhi Kumari<br>
-        <span>Gold Member 🌟</span>
-    </div>
-</header>
+<div class="card">
+    <h2>Select Your Role</h2>
 
-<div class="container">
+    <select id="role">
+        <option value="">-- Choose Role --</option>
+        <option value="customer">Customer</option>
+        <option value="shopkeeper">Shopkeeper</option>
+        <option value="scrap">Scrap Buyer</option>
+        <option value="company">Recycling Company</option>
+    </select>
 
-    <section class="box glass">
-        <h2>Customer Profile</h2>
-        <p><b>Name:</b> Siddhi Kumari</p>
-        <p><b>User ID:</b> ECO1023</p>
-        <p><b>City:</b> Bengaluru</p>
-    </section>
-
-    <section class="box glass">
-        <h2>Total Earnings</h2>
-        <div class="amount">₹ <span id="money">120</span></div>
-        <p>Eco Points: <b><span id="points">60</span> 🪙</b></p>
-    </section>
-
-    <section class="box glass">
-        <h2>Recycle Your Packet</h2>
-        <select id="brand">
-            <option value="">Select Brand</option>
-            <option value="Nestle">Nestle</option>
-            <option value="Pepsi">Pepsi</option>
-            <option value="Unilever">Unilever</option>
-        </select>
-        <input type="number" id="items" placeholder="Number of packets">
-        <button onclick="findShops()">Find Nearby Shops</button>
-    </section>
-
-    <section class="box glass hidden" id="locationBox">
-        <h2>Nearby Shops</h2>
-        <p>📍 GreenMart – 0.4 km</p>
-        <button onclick="selectShop()">Select GreenMart</button>
-    </section>
-
-    <section class="box glass hidden" id="verifyBox">
-        <h2>Shopkeeper Verification</h2>
-        <input type="text" id="shopId" placeholder="Enter Shop ID (GM-221)">
-        <button onclick="verifyShopkeeper()">Verify & Credit</button>
-    </section>
-
-    <section class="box glass hidden success" id="successBox">
-        <h2>🎉 Success</h2>
-        <p>+<span id="earnedPoints"></span> Eco Points</p>
-        <p>Discount Unlocked: <b><span id="discount"></span>%</b></p>
-    </section>
-
+    <button onclick="goToDashboard()">Continue</button>
 </div>
 
-<footer class="footer glass">
-    <p>© 2026 EcoRewards | Rewarding Sustainable Recycling</p>
-</footer>
+<script>
+    function goToDashboard() {
+        const role = document.getElementById("role").value;
 
-<script src="script.js"></script>
+        if (role === "customer") {
+            window.location.href = "cust.html";
+        } 
+        else if (role === "shopkeeper") {
+            window.location.href = "retailer.html";
+        } 
+        else if (role === "scrap") {
+            window.location.href = "scrap.html";
+        } 
+        else if (role === "company") {
+            window.location.href = "company.html";
+        } 
+        else {
+            alert("Please select a role");
+        }
+    }
+</script>
+
 </body>
 </html>
