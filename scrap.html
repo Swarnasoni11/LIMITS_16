@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCollect - Smart Ragpicker Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #22C55E;
+            --primary-dark: #16A34A;
+            --secondary: #3B82F6;
+            --accent: #F59E0B;
+            --danger: #EF4444;
+            --light: #F0FDF4;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 16px;
+            --card-bg: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ECFDF5 0%, #F0F9FF 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-text h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .ragpicker-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            border: 3px solid white;
+        }
+
+        .profile-details h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .profile-details p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            background: var(--light);
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            background: white;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .action-btn .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn.primary .icon {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Schedule Pickup Section */
+        .section {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #DCFCE7;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .slot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .slot-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #E2E8F0;
+        }
+
+        .slot-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .slot-card.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .slot-time {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .slot-price {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Shop Selection */
+        .shop-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .shop-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .shop-card:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .shop-card.selected {
+            border-color: var(--primary);
+            background: #F0FDF9;
+        }
+
+        .shop-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .shop-details h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .shop-details p {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .shop-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .shop-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .shop-stat i {
+            color: var(--primary);
+        }
+
+        /* Factory Connection */
+        .factory-connect {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .factory-connect::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .connect-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .connect-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .factory-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .factory-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .factory-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .factory-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .factory-name i {
+            color: var(--accent);
+        }
+
+        .factory-details {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .factory-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        /* Roadmap Section */
+        .roadmap-container {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-top: 25px;
+            border: 2px solid #E2E8F0;
+        }
+
+        .roadmap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .roadmap-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .roadmap-steps::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .step {
+            position: relative;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, #F0FDF9 0%, #E0F2FE 100%);
+            border-left-color: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .step-number {
+            position: absolute;
+            left: -50px;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .step-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--primary);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid #DCFCE7;
+        }
+
+        .btn-secondary:hover {
+            background: #DCFCE7;
+        }
+
+        .btn-disabled {
+            background: #E2E8F0;
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+            max-width: 300px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* E-Waste Announcer */
+        .ewaste-announcer {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border: 2px solid #FBBF24;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 25px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
+            to { box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+        }
+
+        .announcer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .announcer-header i {
+            color: #D97706;
+            font-size: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .ragpicker-info {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .slot-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slot-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .factory-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>EcoCollect</h1>
+                    <p>Smart Ragpicker Hub</p>
+                </div>
+            </div>
+            
+            <div class="ragpicker-info">
+                <div class="profile">
+                    <div class="avatar">RJ</div>
+                    <div class="profile-details">
+                        <h3>Raj Kumar</h3>
+                        <p>Verified EcoCollector • ID: EC-7842</p>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value">₹2,540</div>
+                        <div class="stat-label">Today's Earnings</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">42</div>
+                        <div class="stat-label">Pickups Done</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn primary" onclick="startScheduling()">
+                    <div class="icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <span>Schedule Pickup</span>
+                </button>
+                
+                <button class="action-btn" onclick="viewRoadmap()">
+                    <div class="icon" style="background: rgba(59, 130, 246, 0.1); color: var(--secondary);">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span>View Route</span>
+                </button>
+                
+                <button class="action-btn" onclick="connectFactory()">
+                    <div class="icon" style="background: rgba(245, 158, 11, 0.1); color: var(--accent);">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <span>Connect Factory</span>
+                </button>
+                
+                <button class="action-btn" onclick="showEarnings()">
+                    <div class="icon" style="background: rgba(34, 197, 94, 0.1); color: var(--primary);">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <span>My Earnings</span>
+                </button>
+            </div>
+
+            <!-- Schedule Pickup Section -->
+            <div class="section" id="scheduleSection">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h2 class="section-title">Schedule Your Pickup Slot</h2>
+                </div>
+                
+                <div class="slot-grid" id="slotGrid">
+                    <!-- Slots will be populated by JavaScript -->
+                </div>
+                
+                <div class="section-header" style="margin-top: 30px;">
+                    <div class="section-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h2 class="section-title">Select Shop for Pickup</h2>
+                </div>
+                
+                <div class="shop-list" id="shopList">
+                    <!-- Shops will be populated by JavaScript -->
+                </div>
+                
+                <button class="btn btn-primary" id="confirmPickupBtn" onclick="confirmPickup()" style="margin-top: 25px;">
+                    <i class="fas fa-check-circle"></i> Confirm Pickup Schedule
+                </button>
+            </div>
+
+            <!-- Factory Connection -->
+            <div class="factory-connect" id="factorySection">
+                <div class="connect-header">
+                    <div class="connect-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 20px; margin-bottom: 5px;">Connect to Factory</h3>
+                        <p style="opacity: 0.8;">Sell your collected materials directly</p>
+                    </div>
+                </div>
+                
+                <div class="factory-options">
+                    <div class="factory-card" onclick="selectFactory('plastic')">
+                        <div class="factory-name">
+                            <i class="fas fa-recycle"></i>
+                            GreenPlast Recycling
+                        </div>
+                        <div class="factory-details">
+                            Specializes in plastic waste recycling. High rates for PET bottles.
+                        </div>
+                        <div class="factory-stats">
+                            <span>📍 5.2 km away</span>
+                            <span>💰 ₹18/kg</span>
+                        </div>
+                    </div>
+                    
+                    <div class="factory-card" onclick="selectFactory('metal')">
+                        <div class="factory-name">
+                            <i class="fas fa-cogs"></i>
+                            MetalMasters Inc.
+                        </div>
+                        <div class="factory-details">
+                            Metal scrap processing factory. Best rates for aluminum and copper.
+                        </div>
+                        <div class="factory-stats">
+                            <span>📍 8.7 km away</span>
+                            <span>💰 ₹45/kg</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- E-Waste Announcer -->
+                <div class="ewaste-announcer" id="ewasteAnnouncer">
+                    <div class="announcer-header">
+                        <i class="fas fa-bolt"></i>
+                        <h4 style="color: #92400E;">E-Waste Collection Alert!</h4>
+                    </div>
+                    <p style="color: #92400E; font-size: 14px; margin-bottom: 15px;">
+                        Special bonus available for electronic waste collection this week!
+                    </p>
+                    <button class="btn-secondary" onclick="connectEwaste()" style="padding: 10px 20px; font-size: 14px;">
+                        <i class="fas fa-plug"></i> Connect to E-Waste Handler
+                    </button>
+                </div>
+                
+                <button class="btn btn-primary" id="connectFactoryBtn" onclick="connectToFactory()" style="margin-top: 20px;">
+                    <i class="fas fa-link"></i> Connect Selected Factory
+                </button>
+            </div>
+
+            <!-- Roadmap Section -->
+            <div class="roadmap-container" id="roadmapSection">
+                <div class="roadmap-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h2 style="font-family: 'Montserrat', sans-serif; font-size: 20px;">Pickup Roadmap</h2>
+                    </div>
+                    <button class="btn-secondary" onclick="startNavigation()" style="padding: 10px 20px;">
+                        <i class="fas fa-directions"></i> Start Navigation
+                    </button>
+                </div>
+                
+                <div class="roadmap-steps" id="roadmapSteps">
+                    <!-- Steps will be populated by JavaScript -->
+                </div>
+                
+                <div class="navigation">
+                    <button class="btn btn-primary" id="startJourneyBtn" onclick="startJourney()">
+                        <i class="fas fa-play"></i> Start Collection Journey
+                    </button>
+                    <button class="btn-secondary" onclick="completeJourney()">
+                        <i class="fas fa-flag-checkered"></i> Mark Complete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <div style="width: 30px; height: 30px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h4 style="font-weight: 600;">Notification</h4>
+        </div>
+        <p id="notificationMessage"></p>
+    </div>
+
+    <script>
+        // App State
+        let selectedSlot = null;
+        let selectedShop = null;
+        let selectedFactory = null;
+        let currentStep = 1;
+        let pickupScheduled = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSlots();
+            initializeShops();
+            initializeRoadmap();
+            showNotification("Welcome back, Raj! You have 3 pending pickups today.");
+        });
+
+        // Initialize Time Slots
+        function initializeSlots() {
+            const slots = [
+                { time: "9:00 AM", price: "₹50 bonus", available: true },
+                { time: "11:00 AM", price: "₹30 bonus", available: true },
+                { time: "1:00 PM", price: "Standard rate", available: true },
+                { time: "3:00 PM", price: "₹40 bonus", available: true },
+                { time: "5:00 PM", price: "₹60 bonus", available: true },
+                { time: "7:00 PM", price: "₹70 bonus", available: false }
+            ];
+
+            const slotGrid = document.getElementById('slotGrid');
+            slotGrid.innerHTML = '';
+            
+            slots.forEach((slot, index) => {
+                const slotCard = document.createElement('div');
+                slotCard.className = `slot-card ${slot.available ? '' : 'btn-disabled'}`;
+                if (!slot.available) {
+                    slotCard.style.opacity = '0.5';
+                    slotCard.style.cursor = 'not-allowed';
+                }
+                
+                slotCard.innerHTML = `
+                    <div class="slot-time">${slot.time}</div>
+                    <div class="slot-price">${slot.price}</div>
+                `;
+                
+                if (slot.available) {
+                    slotCard.onclick = () => selectSlot(index, slotCard);
+                }
+                
+                slotGrid.appendChild(slotCard);
+            });
+        }
+
+        // Initialize Shops
+        function initializeShops() {
+            const shops = [
+                {
+                    name: "Kumar Kirana Store",
+                    location: "Andheri East, 2.1 km away",
+                    packets: 45,
+                    weight: "22 kg",
+                    earnings: "₹450 estimated"
+                },
+                {
+                    name: "Sharma Supermart",
+                    location: "Bandra West, 3.5 km away",
+                    packets: 28,
+                    weight: "15 kg",
+                    earnings: "₹300 estimated"
+                },
+                {
+                    name: "Patel Provision Store",
+                    location: "Juhu, 4.2 km away",
+                    packets: 35,
+                    weight: "18 kg",
+                    earnings: "₹380 estimated"
+                },
+                {
+                    name: "Green Earth Organic",
+                    location: "Santacruz, 1.8 km away",
+                    packets: 52,
+                    weight: "25 kg",
+                    earnings: "₹520 estimated"
+                }
+            ];
+
+            const shopList = document.getElementById('shopList');
+            shopList.innerHTML = '';
+            
+            shops.forEach((shop, index) => {
+                const shopCard = document.createElement('div');
+                shopCard.className = 'shop-card';
+                
+                shopCard.innerHTML = `
+                    <div class="shop-icon">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div class="shop-details">
+                        <h4>${shop.name}</h4>
+                        <p>${shop.location}</p>
+                        <div class="shop-stats">
+                            <div class="shop-stat">
+                                <i class="fas fa-box"></i>
+                                <span>${shop.packets} packets</span>
+                            </div>
+                            <div class="shop-stat">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>${shop.weight}</span>
+                            </div>
+                            <div class="shop-stat">
+                                <i class="fas fa-rupee-sign"></i>
+                                <span>${shop.earnings}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                shopCard.onclick = () => selectShop(index, shopCard);
+                shopList.appendChild(shopCard);
+            });
+        }
+
+        // Initialize Roadmap
+        function initializeRoadmap() {
+            const steps = [
+                {
+                    title: "Pickup Scheduled",
+                    desc: "Your pickup is scheduled for today at 3:00 PM",
+                    time: "Today, 3:00 PM",
+                    active: true
+                },
+                {
+                    title: "Travel to Shop",
+                    desc: "Navigate to Kumar Kirana Store in Andheri",
+                    time: "Estimated: 15 mins",
+                    active: false
+                },
+                {
+                    title: "Collect Packets",
+                    desc: "Collect 45 packets weighing approximately 22 kg",
+                    time: "Estimated: 20 mins",
+                    active: false
+                },
+                {
+                    title: "Travel to Factory",
+                    desc: "Navigate to GreenPlast Recycling Factory",
+                    time: "Estimated: 25 mins",
+                    active: false
+                },
+                {
+                    title: "Sell Materials",
+                    desc: "Sell collected materials and receive payment",
+                    time: "Instant Payment",
+                    active: false
+                }
+            ];
+
+            const roadmapSteps = document.getElementById('roadmapSteps');
+            roadmapSteps.innerHTML = '';
+            
+            steps.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = `step ${step.active ? 'active' : ''}`;
+                
+                stepElement.innerHTML = `
+                    <div class="step-number">${index + 1}</div>
+                    <div class="step-title">
+                        ${step.title}
+                        ${step.active ? '<span style="color: var(--accent); font-size: 12px; background: rgba(245, 158, 11, 0.1); padding: 2px 8px; border-radius: 20px;">ACTIVE</span>' : ''}
+                    </div>
+                    <div class="step-desc">${step.desc}</div>
+                    <div class="step-time">
+                        <i class="far fa-clock"></i>
+                        ${step.time}
+                    </div>
+                `;
+                
+                roadmapSteps.appendChild(stepElement);
+            });
+        }
+
+        // Selection Functions
+        function selectSlot(index, element) {
+            // Reset previous selection
+            document.querySelectorAll('.slot-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Select new slot
+            element.classList.add('selected');
+            selectedSlot = index;
+            
+            showNotification(`Selected time slot ${index + 1}. Please select a shop to continue.`);
+        }
+
+        function selectShop(index, element) {
+            // Reset previous selection
+            document.querySelectorAll('.shop-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Select new shop
+            element.classList.add('selected');
+            selectedShop = index;
+            
+            showNotification(`Selected shop ${index + 1}. Ready to schedule pickup!`);
+        }
+
+        function selectFactory(type) {
+            selectedFactory = type;
+            showNotification(`${type === 'plastic' ? 'GreenPlast Recycling' : 'MetalMasters Inc.'} selected for connection.`);
+        }
+
+        // Action Functions
+        function startScheduling() {
+            document.getElementById('scheduleSection').scrollIntoView({ behavior: 'smooth' });
+            showNotification("Select a time slot and shop to schedule your pickup");
+        }
+
+        function confirmPickup() {
+            if (selectedSlot === null || selectedShop === null) {
+                showNotification("Please select both a time slot and a shop before confirming", "error");
+                return;
+            }
+            
+            pickupScheduled = true;
+            document.getElementById('confirmPickupBtn').innerHTML = '<i class="fas fa-check-circle"></i> Pickup Confirmed!';
+            document.getElementById('confirmPickupBtn').classList.add('btn-disabled');
+            document.getElementById('confirmPickupBtn').classList.remove('btn-primary');
+            
+            showNotification("✅ Pickup scheduled successfully! Check your roadmap for next steps.", "success");
+            
+            // Update roadmap
+            updateRoadmapProgress();
+        }
+
+        function connectFactory() {
+            document.getElementById('factorySection').scrollIntoView({ behavior: 'smooth' });
+            showNotification("Connect with factories to sell your collected materials");
+        }
+
+        function connectToFactory() {
+            if (!selectedFactory) {
+                showNotification("Please select a factory first", "error");
+                return;
+            }
+            
+            showNotification(`Connected to ${selectedFactory === 'plastic' ? 'GreenPlast Recycling' : 'MetalMasters Inc.'}! You can now sell materials directly.`, "success");
+            
+            // Update earnings
+            const earningsElement = document.querySelector('.stat-value');
+            let currentEarnings = parseInt(earningsElement.textContent.replace('₹', '').replace(',', ''));
+            currentEarnings += selectedFactory === 'plastic' ? 500 : 800;
+            earningsElement.textContent = `₹${currentEarnings.toLocaleString()}`;
+        }
+
+        function connectEwaste() {
+            showNotification("Connected to E-Waste Handler! Special bonus rates applied for electronic waste.", "success");
+            
+            // Show special announcement
+            document.getElementById('ewasteAnnouncer').innerHTML = `
+                <div class="announcer-header">
+                    <i class="fas fa-check-circle" style="color: var(--primary);"></i>
+                    <h4 style="color: var(--primary);">E-Waste Connection Active!</h4>
+                </div>
+                <p style="color: var(--primary); font-size: 14px; margin-bottom: 15px;">
+                    You now get ₹100 bonus for every 5kg of e-waste collected!
+                </p>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-secondary" onclick="scheduleEwastePickup()" style="padding: 10px 20px; font-size: 14px;">
+                        <i class="fas fa-calendar"></i> Schedule E-Waste Pickup
+                    </button>
+                    <button class="btn-primary" onclick="viewEwasteMap()" style="padding: 10px 20px; font-size: 14px;">
+                        <i class="fas fa-map"></i> View Collection Points
+                    </button>
+                </div>
+            `;
+        }
+
+        function viewRoadmap() {
+            document.getElementById('roadmapSection').scrollIntoView({ behavior: 'smooth' });
+            showNotification("Your collection roadmap is ready. Follow the steps to maximize earnings!");
+        }
+
+        function startJourney() {
+            if (!pickupScheduled) {
+                showNotification("Please schedule a pickup first before starting your journey", "error");
+                return;
+            }
+            
+            showNotification("🚚 Journey started! Follow the roadmap for step-by-step guidance.", "success");
+            
+            // Activate next step
+            activateStep(2);
+        }
+
+        function completeJourney() {
+            showNotification("🎉 Journey completed! Earnings credited to your account.", "success");
+            
+            // Reset for next journey
+            setTimeout(() => {
+                showNotification("Ready for your next pickup? Schedule now to continue earning!", "info");
+                resetSelections();
+            }, 3000);
+        }
+
+        function startNavigation() {
+            showNotification("🗺️ Navigation started! Following optimal route to your destination.", "info");
+            
+            // Simulate navigation
+            setTimeout(() => {
+                showNotification("📍 You have arrived at the destination!", "success");
+                activateStep(3);
+            }, 2000);
+        }
+
+        // Helper Functions
+        function updateRoadmapProgress() {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index < 1) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            currentStep = 1;
+        }
+
+        function activateStep(stepNumber) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                if (index < stepNumber) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            currentStep = stepNumber;
+        }
+
+        function resetSelections() {
+            selectedSlot = null;
+            selectedShop = null;
+            selectedFactory = null;
+            pickupScheduled = false;
+            
+            document.querySelectorAll('.slot-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.shop-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.getElementById('confirmPickupBtn').innerHTML = '<i class="fas fa-check-circle"></i> Confirm Pickup Schedule';
+            document.getElementById('confirmPickupBtn').classList.remove('btn-disabled');
+            document.getElementById('confirmPickupBtn').classList.add('btn-primary');
+            
+            updateRoadmapProgress();
+        }
+
+        function showEarnings() {
+            showNotification("💰 Your total earnings this month: ₹45,280. Keep up the good work!", "info");
+        }
+
+        function scheduleEwastePickup() {
+            showNotification("📅 E-waste pickup scheduled! Special team will contact you soon.", "success");
+        }
+
+        function viewEwasteMap() {
+            showNotification("🗺️ Opening e-waste collection points map...", "info");
+        }
+
+        function showNotification(message, type = "info") {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            messageElement.textContent = message;
+            
+            // Set color based on type
+            if (type === "error") {
+                notification.style.borderLeftColor = "var(--danger)";
+            } else if (type === "success") {
+                notification.style.borderLeftColor = "var(--primary)";
+            } else if (type === "info") {
+                notification.style.borderLeftColor = "var(--secondary)";
+            }
+            
+            notification.classList.add('show');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Initialize with sample data
+        initializeSlots();
+        initializeShops();
+        initializeRoadmap();
+    </script>
+</body>
+</html>
