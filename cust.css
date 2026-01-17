@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: url("eco.jpeg") no-repeat center/cover;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: -1;
+}
+
+/* GLASS EFFECT */
+.glass {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 40px;
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+.header nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+/* BOXES */
+.box {
+    padding: 25px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    color: white;
+}
+
+/* SECTION COLORS */
+.profile { border-left: 6px solid #2ecc71; }
+.earnings { border-left: 6px solid gold; }
+.product { border-left: 6px solid #3498db; }
+.location { border-left: 6px solid #2980b9; }
+.retailer { border-left: 6px solid orange; }
+.process { border-left: 6px solid #9b59b6; }
+.verify { border-left: 6px solid #16a085; }
+.success { 
+    border-left: 6px solid #27ae60;
+    background: linear-gradient(135deg, rgba(46,204,113,0.4), rgba(255,255,255,0.15));
+}
+
+/* TEXT */
+h2, h4 { color: white; }
+p, li { color: #f1f1f1; }
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+input::placeholder { color: #e0e0e0; }
+
+/* BUTTON */
+button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(46,204,113,0.6);
+}
+
+/* FOOTER */
+.footer {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-top: 2px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+.copy {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.hidden { display: none; }
+.amount { font-size: 36px; font-weight: bold; }
