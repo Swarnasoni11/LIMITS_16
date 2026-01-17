@@ -1,13 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>EcoRewards – Customer Flow</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>EcoRewards – Customer Flow</title>
+
+<style>
+/* ================= GLOBAL ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: url("eco.jpeg") no-repeat center/cover;
+    position: relative;
+}
+
+/* Dark overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: -1;
+}
+
+/* ================= GLASS ================= */
+.glass {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* ================= HEADER ================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+.header nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ================= MAIN ================= */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.box {
+    padding: 25px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    color: white;
+}
+
+/* Section accents */
+.profile { border-left: 6px solid #2ecc71; }
+.earnings { border-left: 6px solid gold; }
+.product { border-left: 6px solid #3498db; }
+.location { border-left: 6px solid #2980b9; }
+.retailer { border-left: 6px solid orange; }
+.verify { border-left: 6px solid #16a085; }
+.success {
+    border-left: 6px solid #27ae60;
+    background: linear-gradient(135deg, rgba(46,204,113,0.4), rgba(255,255,255,0.15));
+}
+
+/* ================= TEXT ================= */
+h2, h4 { color: white; margin-bottom: 10px; }
+p { color: #f1f1f1; margin: 6px 0; }
+
+.amount {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* ================= INPUTS ================= */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+input::placeholder {
+    color: #e0e0e0;
+}
+
+/* ================= BUTTON ================= */
+button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(46,204,113,0.6);
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-top: 2px solid rgba(255,255,255,0.4);
+    color: white;
+}
+
+.copy {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.hidden { display: none; }
+</style>
 </head>
+
 <body>
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 <header class="header glass">
     <div class="logo">🌱 EcoRewards</div>
     <nav>
@@ -21,10 +148,9 @@
     </div>
 </header>
 
-<!-- MAIN -->
+<!-- ================= MAIN ================= -->
 <div class="container">
 
-    <!-- CUSTOMER PROFILE -->
     <section class="box glass profile">
         <h2>Customer Profile</h2>
         <p><b>Name:</b> Siddhi Kumari</p>
@@ -32,34 +158,30 @@
         <p><b>City:</b> Bengaluru</p>
     </section>
 
-    <!-- TOTAL EARNINGS -->
     <section class="box glass earnings">
         <h2>Total Earnings</h2>
         <div class="amount">₹ <span id="money">120</span></div>
-        <p>Eco Points: <b><span id="points">60</span> 🪙</b></p>
+        <p>Eco Points: <b><span id="points">0</span> 🪙</b></p>
     </section>
 
-    <!-- SELECT BRAND & ITEMS -->
     <section class="box glass product">
         <h2>Recycle Your Packet</h2>
         <select id="brand">
             <option value="">Select Brand</option>
-            <option value="Nestle">Nestle</option>
-            <option value="Pepsi">Pepsi</option>
-            <option value="Unilever">Unilever</option>
+            <option>Nestle</option>
+            <option>Pepsi</option>
+            <option>Unilever</option>
         </select>
         <input type="number" id="items" placeholder="Number of packets">
         <button onclick="findShops()">Find Nearby Shops</button>
     </section>
 
-    <!-- LOCATION -->
     <section class="box glass location hidden" id="locationBox">
-        <h2>Nearby Collection Shops</h2>
+        <h2>Nearby Collection Shop</h2>
         <p>📍 GreenMart – 0.4 km</p>
-        <p>📍 EcoStore – 1.1 km</p>
+        <button onclick="selectShop()">Select GreenMart</button>
     </section>
 
-    <!-- RETAILER DETAILS -->
     <section class="box glass retailer hidden" id="retailerBox">
         <h2>Retailer Details</h2>
         <p><b>Shop Name:</b> GreenMart</p>
@@ -67,24 +189,12 @@
         <p>Status: ✅ Verified</p>
     </section>
 
-    <!-- RECYCLE PROCESS -->
-    <section class="box glass process hidden" id="processBox">
-        <h2>Recycle Our Packet</h2>
-        <ol>
-            <li>Give packet to shopkeeper</li>
-            <li>QR scanned & brand verified</li>
-            <li>Shopkeeper confirms quantity</li>
-        </ol>
-    </section>
-
-    <!-- SHOPKEEPER VERIFICATION -->
     <section class="box glass verify hidden" id="verifyBox">
         <h2>Shopkeeper Verification</h2>
-        <input type="text" id="shopId" placeholder="Enter Shopkeeper ID">
+        <input type="text" id="shopId" placeholder="Enter Shop ID (GM-221)">
         <button onclick="verifyShopkeeper()">Verify & Credit Points</button>
     </section>
 
-    <!-- SUCCESS -->
     <section class="box glass success hidden" id="successBox">
         <h2>🎉 Points Credited</h2>
         <p>+<span id="earnedPoints"></span> Eco Points</p>
@@ -93,7 +203,7 @@
 
 </div>
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 <footer class="footer glass">
     <div>
         <h4>About</h4>
@@ -110,6 +220,42 @@
     <p class="copy">© 2026 EcoRewards</p>
 </footer>
 
-<script src="script.js"></script>
+<!-- ================= JS ================= -->
+<script>
+let totalPoints = 0;
+
+function findShops() {
+    document.getElementById("locationBox").classList.remove("hidden");
+}
+
+function selectShop() {
+    document.getElementById("retailerBox").classList.remove("hidden");
+    document.getElementById("verifyBox").classList.remove("hidden");
+}
+
+function verifyShopkeeper() {
+    const shopId = document.getElementById("shopId").value;
+    const items = Number(document.getElementById("items").value);
+
+    if (shopId !== "GM-221" || items <= 0) {
+        alert("Invalid input! Points deducted.");
+        totalPoints = Math.max(0, totalPoints - 5);
+        document.getElementById("points").innerText = totalPoints;
+        return;
+    }
+
+    const earned = items * 10;
+    totalPoints += earned;
+
+    document.getElementById("points").innerText = totalPoints;
+    document.getElementById("earnedPoints").innerText = earned;
+    document.getElementById("discount").innerText =
+        totalPoints >= 100 ? 20 : 10;
+
+    document.getElementById("successBox").classList.remove("hidden");
+}
+</script>
+
 </body>
 </html>
+
